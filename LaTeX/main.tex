@@ -1,0 +1,73 @@
+\documentclass[hidelinks, 11pt]{article}
+\usepackage{geometry}
+\usepackage[table]{xcolor} % To colour header of table
+\usepackage{tabularx}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{times}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{sourcesanspro} % Include Source Sans Pro package
+\usepackage[most]{tcolorbox}
+\usepackage{titletoc} % Explicitly include the titletoc package
+\setstretch{1.5} % Adjusted line spacing
+\usepackage{enumitem} % Make sure to include this in your preamble
+\definecolor{myblue}{RGB}{0, 102, 204}
+
+% Biblatex with APA style
+\usepackage[style=apa, backend=biber]{biblatex}
+\addbibresource{citations/bibtex.bib} % Include your .bib file
+
+\begin{document}
+
+% Title Page
+\input{chapters/01_titlepage.tex}
+
+% Abstract
+\input{chapters/02_abstract.tex}
+
+% Table of Contents
+\newpage
+\tableofcontents % Insert the Table of Contents
+
+% Introduction
+\newpage
+\input{chapters/03_introduction.tex}
+
+% Theory
+\input{chapters/04_theory.tex}
+
+% Methods
+\input{chapters/05_methods.tex}
+
+% Bibliography
+\newpage
+\printbibliography
+
+% Appendix
+\newpage
+\appendix
+\pagenumbering{Roman} % Start Roman numbering
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix} % Add appendix to the table of contents
+
+%\newpage
+%\section{Codebook}
+%\startcontents[codebook] % Start contents for codebook
+%\printcontents[codebook]{l}{1}{\setcounter{tocdepth}{2}} % Print the contents of the codebook
+
+\newpage
+\section{Codebook}
+% Now we stop adding content to the main ToC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} 
+
+
+% Include your codebook file in the appendix
+\input{appendix/codebook.tex}
+
+% Resume adding content to main ToC, if there's anything after the codebook
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}} 
+
+
+\end{document}
