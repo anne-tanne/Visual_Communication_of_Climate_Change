@@ -1,0 +1,221 @@
+\subsection{DALL-E 3 API for Image Generation}
+
+\textit{DALL-E} is now accessible through an API, allowing developers to integrate its capabilities directly into their applications.
+
+Below is an example of how to use the DALL-E API in Python to generate and download an image. This code snippet demonstrates how to programmatically request DALL-E to create an image based on a specified prompt and then download the generated image to a local directory.
+
+
+\begin{lstlisting}
+import requests
+import os
+
+api_key = 'given-api-key-here'
+
+def download_image(url, save_path, file_name):
+    """
+    Downloads an image from the specified URL and saves it to a local directory.
+    """
+    # Send a GET request to the URL
+    response = requests.get(url)
+    if response.status_code == 200:
+        # Create the save directory if it doesn't exist
+        os.makedirs(save_path, exist_ok=True)
+        # Create the full path for the new file
+        file_path = os.path.join(save_path, file_name)
+        # Open the file and write the image content to it
+        with open(file_path, 'wb') as file:
+            file.write(response.content)
+        print(f"Image downloaded successfully: {file_path}")
+        return file_path
+    else:
+        # Raise an exception if there's an error in downloading
+        raise Exception(f"Error downloading image: {response.status_code}")
+
+def generate_image(prompt, model="dall-e-3", size="1024x1024", quality="standard", n=1, api_key = api_key):
+    """
+    Generates an image based on a text prompt using the DALL-E API.
+    """
+    # Set up the headers for the API request
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    # Define the data payload for the POST request
+    data = {
+        "model": model,
+        "prompt": prompt,
+        "size": size,
+        "quality": quality,
+        "n": n
+    }
+
+    # Make the POST request to the DALL-E API
+    response = requests.post("https://api.openai.com/v1/images/generations", json=data, headers=headers)
+    if response.status_code == 200:
+        # Return the URL of the generated image
+        return response.json()['data'][0]['url']
+    else:
+        # Raise an exception if there's an error in the API call
+        raise Exception(f"Error in API call: {response.status_code} {response.text}")
+
+def generate_and_download_image(prompt, save_path, file_name):
+    """
+    Combines the functions of generating an image and downloading it.
+    """
+    # Generate the image and retrieve the URL
+    image_url = generate_image(prompt)
+    # Download the image from the URL
+    return download_image(image_url, save_path, file_name)
+
+# Example usage
+prompt = "a photorealistic image of a tsunami"
+save_path = "downloads"
+file_name = "tsunami.jpg"
+generate_and_download_image(prompt, save_path, file_name)
+
+
+\end{lstlisting}
+
+\subsection{ImagineAPI.dev Midjourney API Image Generation}
+
+Given the absence of an official \textit{Midjourney} API, third-party services such as \textit{ImagineAPI.dev} offer an alternative means of accessing \textit{Midjourney}'s image generation model. 
+
+Below is an example of how to use their API in Python to generate and download the images. As \textit{Midjourney} generates four image variants for each call, this code randomly selects one of these four images for analysis and saves the other three as a reference.
+
+\begin{lstlisting}
+import http.client
+import json
+import time
+import random
+import os
+import requests
+
+def send_request(method, path, api_key, body=None):
+    """Establishes a connection and sends a request to the server."""
+    conn = http.client.HTTPSConnection("demo.imagineapi.dev")
+    headers = {
+        'Authorization': f'Bearer {api_key}',  # Authorisation header with API key
+        'Content-Type': 'application/json'
+    }
+    conn.request(method, path, body=json.dumps(body) if body else None, headers=headers)
+    response = conn.getresponse()
+    data = json.loads(response.read().decode())
+    conn.close()
+    return data
+
+def generate_image(prompt, api_key):
+    """Generates an image based on the prompt and returns the image ID."""
+    data = {"prompt": prompt}
+    response_data = send_request('POST', '/items/images/', api_key, data)
+    return response_data['data']['id']
+
+def get_image_status(image_id, api_key):
+    """Retrieves the status of the image generation."""
+    response_data = send_request('GET', f"/items/images/{image_id}", api_key)
+    return response_data['data']
+
+def wait_for_image(image_id, api_key):
+    """Waits for the image to be generated, checking the status every 5 seconds."""
+    while True:
+        image_data = get_image_status(image_id, api_key)
+        if image_data['status'] in ['completed', 'failed']:
+            return image_data
+        else:
+            print(f"Image generation in progress. Status: {image_data['status']}")
+            time.sleep(5)
+
+def download_images(image_data, download_path, selection_path):
+    """
+    Downloads the images from the provided image data.
+    
+    This function takes the list of image URLs from the 'upscaled_urls' field in the image data.
+    It randomly selects one of these images to save in the 'selection_path' directory, 
+    indicating it as the chosen image. The rest of the images are saved in the 'download_path' directory.
+
+    Args:
+        image_data: The data containing the image URLs.
+        download_path: The path where the majority of images will be downloaded.
+        selection_path: The path where the randomly selected image will be saved.
+    """
+    if not image_data or 'upscaled_urls' not in image_data:
+        print("No image data provided for download.")
+        return
+
+    urls = image_data['upscaled_urls']
+    os.makedirs(download_path, exist_ok=True)
+    os.makedirs(selection_path, exist_ok=True)
+
+    selected_image_url = random.choice(urls)
+    for url in urls:
+        file_name = url.split('/')[-1]
+        file_path = os.path.join(selection_path if url == selected_image_url else download_path, file_name)
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(file_path, 'wb') as file:
+                file.write(response.content)
+            print(f"Image downloaded successfully: {file_path}")
+        else:
+            print(f"Error downloading image from {url}: {response.status_code}")
+
+# Example usage
+api_key = 'given-api-key-here'
+prompt = "a photorealistic image of a tsunami"
+
+image_id = generate_image(prompt, api_key)
+image_data = wait_for_image(image_id, api_key)
+
+download_path = "downloads"
+selection_path = "selection"
+download_images(image_data, download_path, selection_path)
+
+\end{lstlisting}
+
+
+
+\subsection{Visual Attribute Detection}
+
+This Python script is designed to analyse images and extract key visual attributes, specifically average colour, brightness, and saturation. The script performs the following steps:
+
+\begin{enumerate}
+    \item \textbf{Reading the Image}: The image is read in BGR (Blue, Green, Red) format using OpenCV.
+    \item \textbf{Colour Conversion}: The image is then converted to RGB (Red, Green, Blue) format for colour analysis, and to HSV (Hue, Saturation, Value) format for brightness and saturation analysis.
+    \item \textbf{Calculating Averages}: It computes the average colour in the RGB format, and the average brightness and saturation from the HSV format.
+    \item \textbf{Output}: The script returns the calculated averages of colour, brightness, and saturation for further analysis.
+\end{enumerate}
+
+\begin{lstlisting}
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+
+# Function to analyse an image and extract its visual attributes
+def analyse_image(image_path):
+    # Read the image in BGR format
+    image = cv2.imread(image_path)
+    
+    # Convert the image to RGB format
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    # Convert the image to HSV format for brightness and saturation analysis
+    image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    
+    # Calculate the average color (in RGB)
+    average_colour = np.mean(image_rgb, axis=(0, 1))
+    
+    # Calculate the average brightness (V channel of HSV)
+    average_brightness = np.mean(image_hsv[:, :, 2])
+    
+    # Calculate the average saturation (S channel of HSV)
+    average_saturation = np.mean(image_hsv[:, :, 1])
+    
+    # Display the image
+    plt.imshow(image_rgb)
+    plt.axis('off')
+    plt.title('Analysed Image')
+    plt.show()
+    
+    # Return the computed visual attributes
+    return average_colour, average_brightness, average_saturation
+\end{lstlisting}
