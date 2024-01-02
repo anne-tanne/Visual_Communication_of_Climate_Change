@@ -10,6 +10,8 @@
 \textit{DALL-E} is now accessible through an API by \textit{OpenAI}, allowing developers to integrate its capabilities directly into their applications.
 
 Below is an example of how to use the \textit{DALL-E} API in Python to generate and download an image. This code snippet demonstrates how to programmatically request \textit{DALL-E} to create an image based on a specified prompt and then download the generated image to a local directory.
+
+
 \begin{lstlisting}
 import requests
 import os
@@ -82,37 +84,90 @@ generate_and_download_image(prompt, save_path, file_name)
 
 \end{lstlisting}
 
-\subsection{\textit{Midjourney} Image Generation Using Default Interface}
-\label{subsec:midjourney-default-interface}
+\subsection{\textit{ImagineAPI.dev} \textit{Midjourney} API Image Generation}
+\label{subsec:midjourney-api}
 
-In this study, the images are generated using \textit{Midjourney}'s standard interface, specifically version 6.0 of the model. This approach was chosen instead of using third-party APIs such as \textit{ImagineAPI.dev} in order to comply with legal and ethical standards.
+Given the absence of an official \textit{Midjourney} API, third-party services such as \textit{ImagineAPI.dev} offer an alternative means of accessing \textit{Midjourney}'s image generation model. 
 
-The process of generating images in Midjourney involves manually entering specific prompts directly into the Midjourney interface on Discord. An example of such a prompt is illustrated below:
-\begin{verbatim}
-/imagine prompt: a photorealistic image of a tsunami --v 6 --s 100
-\end{verbatim}
-This example demonstrates the format and parameters used:
+Below is an example of how to use their API in Python to generate and download the images.
 
-\begin{itemize}
-\item \textbf{Prompt Command:} The \texttt{/imagine} command initiates the image generation process.
-\item \textbf{Prompt Content:} The actual prompt, in this case, "\textit{a photorealistic image of a tsunami}" defines the subject of the generated image.
-\item \textbf{Version Parameter (--v):} The --v 6 parameter specifies the use of Midjourney version 6.0.
-\item \textbf{Stylize Parameter (--s):} The --s 100 parameter sets the level of stylisation. Low stylisation values produce images that are close to the prompt but less artistic. High stylisation values produce images that are very artistic but less in line with the prompt.  The default value of --stylize is 100 while the parameter accepts integer values from 0-1000 when the current model is used.
-\end{itemize}
+\begin{lstlisting}
+import http.client
+import json
+import time
+import os
+import requests
 
-\subsection{Image Naming Convention and Organisation}
+def send_request(method, path, api_key, body=None):
+    """Establishes a connection and sends a request to the server."""
+    conn = http.client.HTTPSConnection("demo.imagineapi.dev")
+    headers = {
+        'Authorization': f'Bearer {api_key}',  # Authorisation header with API key
+        'Content-Type': 'application/json'
+    }
+    conn.request(method, path, body=json.dumps(body) if body else None, headers=headers)
+    response = conn.getresponse()
+    data = json.loads(response.read().decode())
+    conn.close()
+    return data
 
-A specific naming and storage convention will be used to systematically manage the generated images, where each image will be named according to the format \texttt{ImageID\_PromptID\_Model\_Date\_PromptExcerpt}. This structure makes it easier to track and identify the images in the data set.
+def generate_image(prompt, api_key):
+    """Generates an image based on the prompt and returns the image ID."""
+    data = {"prompt": prompt}
+    response_data = send_request('POST', '/items/images/', api_key, data)
+    return response_data['data']['id']
 
-\begin{itemize}
-    \item \texttt{ImageID}: A unique identifier for each image.
-    \item \texttt{PromptID}: The identifier of the prompt used, which links each image to its source prompt.
-    \item \texttt{Model}: The AI model used for generation (\textit{DALL-E} or \textit{Midjourney}).
-    \item \texttt{Date}: The date the image was created, which helps with chronological analysis.
-    \item \texttt{PromptExcerpt}: An excerpt from the prompt for a quick context reference.
-\end{itemize}
+def get_image_status(image_id, api_key):
+    """Retrieves the status of the image generation."""
+    response_data = send_request('GET', f"/items/images/{image_id}", api_key)
+    return response_data['data']
 
-The images will be stored in a root directory, with individual subfolders for each prompt.
+def wait_for_image(image_id, api_key):
+    """Waits for the image to be generated, checking the status every 5 seconds."""
+    while True:
+        image_data = get_image_status(image_id, api_key)
+        if image_data['status'] in ['completed', 'failed']:
+            return image_data
+        else:
+            print(f"Image generation in progress. Status: {image_data['status']}")
+            time.sleep(5)
+
+def download_images(image_data, download_path):
+    """Downloads the images to the specified path."""
+    if not image_data or 'upscaled_urls' not in image_data:
+        print("No image data provided for download.")
+        return
+
+    urls = image_data['upscaled_urls']
+    os.makedirs(download_path, exist_ok=True)
+
+    for url in urls:
+        file_name = url.split('/')[-1]
+        file_path = os.path.join(download_path, file_name)
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(file_path, 'wb') as file:
+                file.write(response.content)
+            print(f"Image downloaded successfully: {file_path}")
+        else:
+            print(f"Error downloading image from {url}: {response.status_code}")
+
+
+# Example usage
+api_key = 'given-api-key-here'
+prompt = "a photorealistic image of a tsunami"
+
+image_id = generate_image(prompt, api_key)
+image_data = wait_for_image(image_id, api_key)
+
+download_path = "downloads"
+selection_path = "selection"
+download_images(image_data, download_path, selection_path)
+
+\end{lstlisting}
+
+
 
 \subsection{Visual Attribute Detection}
 

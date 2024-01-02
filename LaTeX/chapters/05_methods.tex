@@ -1,24 +1,25 @@
 \section{Methods}
 
 \subsection{Selection of AI Models}
-For this study, the two prominent image-to-text models \textit{DALL-E 3} and \textit{Midjourney v5.2} were selected. Both models have seen a significant rise in popularity and usage in recent years. 
+For this study, the two prominent image-to-text models \textit{DALL-E 3} and \textit{Midjourney v6} were selected. Both models have seen a significant rise in popularity and usage in recent years. 
 
-The reason for choosing these models lies in their widespread public discussion in the field of AI image generation \parencite{Gibson2023, Gindham2023, Guiness2023}. Furthermore, both models have garnered widespread attention due to their advanced capabilities and user-friendly interfaces, making them accessible to a broad audience
+The reason for choosing these models lies in their widespread public discussion in the field of AI image generation \parencite{Gibson2023, Gindham2023, Guiness2023}. Furthermore, both models have garnered widespread attention due to their advanced capabilities and user-friendly interfaces, making them accessible to a broad audience \parencite{Thomas2023}
 
-\textit{DALL-E 3} was recently integrated into \textit{Microsoft}'s \textit{Bing} search engine and offers limited free and very simple query access to the \parencite{Bing2024} model. This integration in combination with the direct connection to \textit{ChatGPT} make for its prominence in the public discourse. \textit{Midjourney} on the other hand is not quite as accessible as it operates through a \textit{Discord} interface, which may pose a barrier to those unfamiliar with the platform. Nonetheless, despite the discontinuation of its free trial in April 2023 due to high user demand and abuse \parencite{Weiss2023}, \textit{Midjourney} boasts over 16 million registered \textit{Discord} users \parencite{Krivec2023}, highlighting its popularity. While \textit{Midjourney} lacks a first-party API, various third-party providers are working to bridge this gap. 
+\textit{DALL-E 3} was recently integrated into \textit{Microsoft}'s \textit{Bing} search engine, which offers limited free and very simple query access to the model \parencite{Bing2024} . This integration in combination with the direct connection to \textit{ChatGPT} make for its prominence in the public discourse. \textit{Midjourney} on the other hand is not quite as accessible, as it operates through a \textit{Discord} interface, which may pose a barrier to those unfamiliar with the platform. Nonetheless, despite the discontinuation of its free trial in April 2023 due to high user demand and abuse \parencite{Weiss2023}, \textit{Midjourney} counts over 16 million registered \textit{Discord} users \parencite{Krivec2023}, highlighting its popularity. As of January 2024, \textit{Midjourney} lacks a first-party API.
 
-Another frequently discussed model is \textit{Stable Diffusion}, which has gained popularity since its public release in the second half of 2023. Stable Diffusion still offers free, open-access trials and a first-party API and hence has some advantages over Midjourney. However, it is widely recognised that \textit{Midjourney} and \textit{DALL-E} produce higher quality images at faster speeds as Stable Diffusion requires more computing power \parencite{Kothari2023}. Furthermore, a look at recent \textit{Google} search trends (see figure \ref{fig:google_search_trends}) shows that \textit{Midjourney} and \textit{DALL-E} have a lead in user interest compared to \textit{Stable Diffusion}. These factors led to the selection of  \textit{Midjourney} and \textit{DALL-E} selection for this study.
+Another frequently discussed model is \textit{Stable Diffusion}, which has gained popularity since its public release in the second half of 2023. \textit{Stable Diffusion} still offers free, open-access trials and a first-party API and hence has some advantages over \textit{Midjourney}. However, it is recognised that \textit{Midjourney} and \textit{DALL-E} produce higher quality images at faster speeds as \textit{Stable Diffusion} requires more computing power \parencite{Kothari2023}. Furthermore, a look at recent \textit{Google} search trends (see figure \ref{fig:google_search_trends}) shows that \textit{Midjourney} and \textit{DALL-E} have a lead in user interest compared to \textit{Stable Diffusion}. These factors led to the selection of  \textit{Midjourney} and \textit{DALL-E} for this study.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{resources/google_search_trends.png}
-    \caption{Worldwide Google Search Trends Over Time}
+    \caption[Text-to-Image Models Google Search Trends]{Worldwide Google Search Trends Over Time}
     \label{fig:google_search_trends}
 \end{figure}
 
 \subsection{Designing Prompts}
+\label{subsec:designing-prompts}
 
-A total of 26 prompts ($n=26$)\footnote{These prompts have to be reviewed and refined in a later step to ensure clarity, relevance and alignment with the research objectives. } were developed for this study, which later will be "fed" to the models. A comprehensive list of all prompts can be found in chapter \ref{appendix:prompts} in the appendix.
+A total of $26$ prompts ($n=26$)\footnote{These prompts have to be reviewed and refined in a later step to ensure clarity, relevance and alignment with the research objectives. } were developed for this study, which later will be "fed" to the models. A comprehensive list of all prompts can be found in chapter \ref{appendix:prompts} in the appendix.
 
 These prompts were designed to strike a balance between guiding the AI models and allowing sufficient room for interpretation to ensure a wide range of responses. The aim was to provide open-ended prompts to some degree, but specific enough to generate images that were relevant and insightful in the context of extreme weather events. The process of developing prompts followed a structured approach, starting from broader concepts and gradually becoming more specific.
 
@@ -26,6 +27,79 @@ The development process began with the creation of a basic prompt  ($n=1$) ("\te
 
 Building on the general prompt, a series of more specific prompts ($n=8$) were developed, each targeting a specific type of extreme weather event as categorised by the IPCC (see table \ref{tab:extreme_weather_events}). This includes prompts such as "\textit{Depict temperature extremes}" or "\textit{Depict heavy precipitation}". These prompts aim to analyse the ability of the models to represent different weather phenomena and their impacts.
 
-Further, the prompts were expanded to include the effects of these weather events ($n=4$). This includes impacts on human life, natural landscapes, infrastructure, and cultural and social changes. These questions were derived directly from the research objectives and the literature review (see chapter \ref{subsec:climate-change-and-extreme-weather}. The aim is to find out how text-to-image models represent the consequences of extreme weather events. In addition, further prompts were developed to explore actions related to extreme weather events ($n=2$). These include recovery efforts and adaptation strategies.
+Further, the prompts were expanded to include the effects of these weather events ($n=4$). This includes impacts on human life, natural landscapes, infrastructure, and cultural and social changes. These questions were based on the literature review (see chapter \ref{subsec:climate-change-and-extreme-weather}. The aim is to find out how text-to-image models represent the consequences of extreme weather events. In addition, further prompts were developed to explore actions related to extreme weather events ($n=2$). These include recovery efforts and adaptation strategies.
 
-Finally, prompts were developed focusing on the causes of extreme weather events ($n=3$) and future climate scenarios ($n=8$). These prompts aim to identify the AI models' understandings of the causes of extreme weather events and their visualisation of future weather patterns and climate change impacts.
+Finally, prompts were developed focusing on the causes of extreme weather events ($n=3$) and future climate scenarios ($n=8$). These prompts aim to identify the models' understandings of the causes of extreme weather events and their visualisation of future weather patterns and climate change impacts.
+
+\subsubsection{Image Generation}
+The prompts designed for this study (as described in \ref{subsec:designing-prompts}) will be submitted to the official \textit{DALL-E 3} API, while for  \textit{Midjourney} the official \textit{Discord} interface will be used for data generation.
+
+\noindent
+For generating images using the \textit{DALL-E 3} API, the following parameters were chosen:
+
+\begin{itemize}
+\item \textbf{Model specification:} The model parameter was set to 'dall-e-3' to utilise the latest capabilities of the DALL-E 3 model.
+\item \textbf{Image size:} The size parameter was set to '1024x1024' to ensure a uniform resolution for all generated images.
+\item \textbf{Image quality:} The quality setting "Standard" was selected to achieve a compromise between image fidelity and generation speed.
+\item \textbf{Number of images:} The parameter 'n' was set to 1 to comply with the restriction of DALL-E 3 to the generation of one image per API call.
+\end{itemize}
+
+An example of how this API can be used can be found in the appendix (see Appendix chapter \ref{subsec:dalle-api}.
+
+\subsubsection{Generating Images through  \textit{Midjourney} Interface}
+
+For the creation of images with Midjourney, the standard \textit{Discord} interface will be used. The decision to enter the prompts manually via \textit{Discord} was motivated by the lack of an official API and potential legal and ethical implications associated with third-party APIs. Additionally, it's worth noting that the pricing for \textit{Midjourney}'s subscription, which allows for approximately 200 prompts (each generating 4 images), is remarkably more cost-effective at only 10 francs, compared to third-party APIs which can range between 20 and 60 francs for a similar workload.
+
+\begin{itemize}
+\item \textbf{Model Version:} \textit{Midjourney} v6.0 will be the selected model version ( \texttt{--v 6.0}). This choice ensures access to the latest features and capabilities offered by \textit{Midjourney}.
+\item \textbf{Stylize Parameter:}  The \texttt{--stylize} parameter is intended to influence the application of \textit{Midjourney}'s default artistic style. Low stylisation values produce images that are close to the prompt but less artistic. High stylisation values produce images that are very artistic but less in line with the prompt. The default value of \texttt{--stylize} (also used for this study) is 100 while the parameter accepts integer values from 0-1000 when the current model is used.
+\item \textbf{Image Upscaling:} All images will be upscaled post-generation, ensuring enhanced detail and quality suitable for in-depth analysis.
+\end{itemize}
+
+\subsection{Sample Size}
+
+A total of 232 images will be analysed in this study, corresponding to 26 (+3) unique prompts, with each prompt generating eight images (four from \textit{DALL-E} and four from \textit{Midjourney}).
+
+\begin{itemize}
+\item \textbf{\textit{Midjourney}:} For each prompt submitted to \textit{Midjourney}, four images will automatically be generated. This is a default setting in \textit{Midjourney}, where a single prompt yields a set of four distinct images.
+\item \textbf{\textit{DALL-E}:} In the case of \textit{DALL-E}, each prompt will be submitted four separate times to the API, as \textit{DALL-E} generates only one image per API call.
+\end{itemize}
+
+The decision to create four images for each prompt follows the following logic
+
+\begin{itemize}
+\item \textbf{Variability in AI interpretation:} AI models often interpret the same prompt differently, leading to a variety of results. By creating multiple images for each prompt, the study captures a broader range of interpretations and nuances.
+\item \textbf{Balance between diversity and redundancy:} While the first images usually have a large variety, the variation tends to decrease with subsequent images. If more than four images are generated per prompt, this can lead to redundant data without significant new insights being gained.
+\end{itemize}
+
+Figure \ref{fig:ai_outputs} shows a comparison of the images that \textit{DALL-E} generates for a single prompt. While the style and content of the first four images still vary, the last four images converge in style and content, which indicates a stagnation in variability.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{resources/comparison_output_numbers.png}
+\caption[AI Model Image Variability]{Comparison of the output for a single prompt by \textit{DALL-E 3}. The first four images show diverse interpretations, while the last four indicate reduced variability.}
+\label{fig:ai_outputs}
+\end{figure}
+
+\subsection{Manual Content Analysis}
+\label{subsec:manual-content-analysis}
+
+The content analysis is an essential part of this study and follows on from the collection of material carried out in the field phase. 
+
+\subsubsection{Codebook}
+\label{subsubsec:codebook}
+
+The core of a content analysis lies in the development of a category scheme (codebook), which is necessary in order to make statements about the collected material. The more detailed components and characteristics of a codebook are not discussed in this paper; however, the basis for this paper is aligned with the works of \textcite[153-]{Brosius2016} and \textcite[373--]{Schnell2018}
+
+The codebook contains both formal categories, such as the generation model used, the generation date, the exact prompt used, etc., and content categories that have been developed to answer the research questions  (see Appendix, p. \pageref{appendix:codebook}). Furthermore, the codebook contains the coding instructions for the various variables.
+
+\subsubsection{Creation of a Coding Matrix}
+\label{subsubsec:creation-coding-matrix}
+To facilitate the coding process, a coding matrix was established in a Microsoft Excel spreadsheet. This matrix was designed with one column for each variable, as defined in the codebook. For variables with limited categorical options, data validation rules were applied to restrict input to those categories. This ensures the integrity of the data entry process and enables efficient and formally accurate coding of the image dataset.
+
+\subsubsection{Formal Categories}
+\label{subsubsec:formal-categories}
+The determination of the coding units was straightforward and clearly fixed from the beginning since this research focused only on AI-generated images. It was established that from an image, only the visual content would be examined, excluding any embedded text, polls, or content from other sources not part of the investigation unit.
+
+Defining general filters was necessary to exclude articles that were not related to news from the total population or later from the sample during material collection (see Appendix, pp. 55ff).

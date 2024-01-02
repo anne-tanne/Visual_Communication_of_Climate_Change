@@ -75,12 +75,14 @@
 \pagenumbering{Roman}
 \section*{Appendix}
 \addcontentsline{toc}{section}{Appendix}
-\printcontents[appendix]{l}{1}{\setcounter{tocdepth}{2}}
+%\printcontents[appendix]{l}{1}{\setcounter{tocdepth}{2}}
 
 \newpage
 \input{appendix/01_prompts.tex}
 % Reset tocdepth
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+
 
 \newpage
 \section{Codebook}
@@ -104,6 +106,15 @@
 % Reset tocdepth
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
+% Insert the List of Figures
+\newpage
+\section{List of Figures}
+\listoffigures
+
+% Insert the List of Tables
+\newpage
+\section{List of Tables}
+\listoftables
 
 
 \end{document}

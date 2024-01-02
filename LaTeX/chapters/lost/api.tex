@@ -1,0 +1,90 @@
+\section{Methods}
+
+\subsection{Selection of AI Models}
+For this study, the two prominent image-to-text models \textit{DALL-E 3} and \textit{Midjourney v5.2} were selected. Both models have seen a significant rise in popularity and usage in recent years. 
+
+The reason for choosing these models lies in their widespread public discussion in the field of AI image generation \parencite{Gibson2023, Gindham2023, Guiness2023}. Furthermore, both models have garnered widespread attention due to their advanced capabilities and user-friendly interfaces, making them accessible to a broad audience \parencite{Thomas2023}
+
+\textit{DALL-E 3} was recently integrated into \textit{Microsoft}'s \textit{Bing} search engine and offers limited free and very simple query access to the \parencite{Bing2024} model. This integration in combination with the direct connection to \textit{ChatGPT} make for its prominence in the public discourse. \textit{Midjourney} on the other hand is not quite as accessible, as it operates through a \textit{Discord} interface, which may pose a barrier to those unfamiliar with the platform. Nonetheless, despite the discontinuation of its free trial in April 2023 due to high user demand and abuse \parencite{Weiss2023}, \textit{Midjourney} boasts over 16 million registered \textit{Discord} users \parencite{Krivec2023}, highlighting its popularity. While \textit{Midjourney} lacks a first-party API, various third-party providers are working to bridge this gap. 
+
+Another frequently discussed model is \textit{Stable Diffusion}, which has gained popularity since its public release in the second half of 2023. Stable Diffusion still offers free, open-access trials and a first-party API and hence has some advantages over Midjourney. However, it is widely recognised that \textit{Midjourney} and \textit{DALL-E} produce higher quality images at faster speeds as Stable Diffusion requires more computing power \parencite{Kothari2023}. Furthermore, a look at recent \textit{Google} search trends (see figure \ref{fig:google_search_trends}) shows that \textit{Midjourney} and \textit{DALL-E} have a lead in user interest compared to \textit{Stable Diffusion}. These factors led to the selection of  \textit{Midjourney} and \textit{DALL-E} for this study.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{resources/google_search_trends.png}
+    \caption{Worldwide Google Search Trends Over Time}
+    \label{fig:google_search_trends}
+\end{figure}
+
+\subsection{Designing Prompts}
+\label{subsec:designing-prompts}
+
+A total of 26 prompts ($n=26$)\footnote{These prompts have to be reviewed and refined in a later step to ensure clarity, relevance and alignment with the research objectives. } were developed for this study, which later will be "fed" to the models. A comprehensive list of all prompts can be found in chapter \ref{appendix:prompts} in the appendix.
+
+These prompts were designed to strike a balance between guiding the AI models and allowing sufficient room for interpretation to ensure a wide range of responses. The aim was to provide open-ended prompts to some degree, but specific enough to generate images that were relevant and insightful in the context of extreme weather events. The process of developing prompts followed a structured approach, starting from broader concepts and gradually becoming more specific.
+
+The development process began with the creation of a basic prompt  ($n=1$) ("\textit{Depict an extreme weather event}") that was intentionally broad. This prompt is intended to give the models the freedom to interpret and represent what they inherently understand to be an extreme weather event.
+
+Building on the general prompt, a series of more specific prompts ($n=8$) were developed, each targeting a specific type of extreme weather event as categorised by the IPCC (see table \ref{tab:extreme_weather_events}). This includes prompts such as "\textit{Depict temperature extremes}" or "\textit{Depict heavy precipitation}". These prompts aim to analyse the ability of the models to represent different weather phenomena and their impacts.
+
+Further, the prompts were expanded to include the effects of these weather events ($n=4$). This includes impacts on human life, natural landscapes, infrastructure, and cultural and social changes. These questions were derived directly from the research objectives and the literature review (see chapter \ref{subsec:climate-change-and-extreme-weather}. The aim is to find out how text-to-image models represent the consequences of extreme weather events. In addition, further prompts were developed to explore actions related to extreme weather events ($n=2$). These include recovery efforts and adaptation strategies.
+
+Finally, prompts were developed focusing on the causes of extreme weather events ($n=3$) and future climate scenarios ($n=8$). These prompts aim to identify the AI models' understandings of the causes of extreme weather events and their visualisation of future weather patterns and climate change impacts.
+
+\subsubsection{Image Generation}
+The prompts designed for this study (as described in \ref{subsec:designing-prompts}) were submitted to the respective APIs of \textit{DALL-E 3} and \textit{Midjourney}. For \textit{DALL-E 3}, the official API of \textit{OpenAI} was used, while for \textit{Midjourney} \textit{ImagineAPI.dev} was used, as there is no official API available.
+
+For generating images using the DALL-E 3 API, the following parameters and process were chosen:
+
+\begin{itemize}
+\item \textbf{Model specification:} The model parameter was set to 'dall-e-3' to utilise the latest capabilities of the DALL-E 3 model.
+\item \textbf{Image size:} The size parameter was set to '1024x1024' to ensure a uniform resolution for all generated images.
+\item \textbf{Image quality:} The quality setting "Standard" was selected to achieve a compromise between image fidelity and generation speed.
+\item \textbf{Number of images:} The parameter 'n' was set to 1 to comply with the restriction of DALL-E 3 to the generation of one image per API call.
+\item \textbf{Prompt Submission:} The API was used to submit text prompts, each of which should elicit a specific image type relevant to the study.
+\item \textbf{Image Download:} After successful generation, the images were downloaded and stored in a specified local directory for analysis.
+\end{itemize}
+
+\subsubsection{Using ImagineAPI.dev for Midjourney}
+
+For Midjourney, the ImagineAPI.dev service was used with the following approach:
+
+\begin{itemize}
+\item \textbf{Model Version:} The default model used was Midjourney v5.2. This specific version was implicitly selected, as it is Midjourney's current default setting.
+\item \textbf{Prompt Submission:} Images were generated by submitting prompts via ImagineAPI.dev, which provides an interface to Midjourney.
+\item \textbf{Image generation monitoring:} The status of each image generation request was monitored, with the system checking every 5 seconds until completion.
+\item \textbf{Instant Upscale:} Generated images were automatically upscaled to ensure high quality output without additional steps.
+\item \textbf{Image Download:} After completion, the images were downloaded and saved in a specific directory so that they were ready for later analysis.
+\end{itemize}
+
+An example of how these APIs can be used can be found in the appendix (see Appendix chapter \ref{subsec:dalle-api} and \ref{subsec:midjourney-api}.
+
+\subsubsection{Sample Size}
+
+A total of 208 images will be analysed in this study, corresponding to 26 unique prompts, with each prompt generating eight images (four from DALL-E and four from Midjourney).
+
+\begin{itemize}
+\item \textbf{Midjourney:} For each prompt submitted to Midjourney, four images will automatically be generated. This is a default setting in Midjourney, where a single prompt yields a set of four distinct images.
+\item \textbf{DALL-E 3:} In the case of DALL-E 3, each prompt will be submitted four separate times to the API, as DALL-E 3 generates only one image per API call.
+\end{itemize}
+
+The decision to create four images for each prompt follows the following logic
+
+\begin{itemize}
+\item \textbf{Variability in AI interpretation:} AI models often interpret the same prompt differently, leading to a variety of results. By creating multiple images for each prompt, the study captures a broader range of interpretations and nuances that a single image may not account for.
+\item \textbf{Balance between diversity and redundancy:} While the first images usually have a large variety, the variation tends to decrease with subsequent images. If more than four images are generated per prompt, this can lead to redundant data without significant new insights being gained.
+\end{itemize}
+
+\Subsection {Image naming convention and organisation}
+
+A specific naming and storage convention will be used to systematically manage the generated images, where each image will be named according to the format ImageID_PromptID_Model_Date_PromptExcerpt. This structure makes it easier to track and identify the images in the data set.
+
+\begin{itemize}
+\item ImageID: A unique identifier for each image.
+\item PromptID: The identifier of the prompt used, which links each image to its source prompt
+\item Model: The AI model used for generation (DALL-E or Midjourney).
+\item Date: The date the image was created, which helps with chronological analysis
+\item PromptExcerpt: An excerpt from the prompt for a quick context reference.
+\end{itemize}
+
+The images will be stored in a root directory, with individual subfolders for each prompt.
