@@ -1,8 +1,14 @@
+\section{Code Scripts}
+% Exclude subsections from the main ToC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\label{appendix:code}
+
+
 \subsection{DALL-E 3 API for Image Generation}
 
-\textit{DALL-E} is now accessible through an API, allowing developers to integrate its capabilities directly into their applications.
+\textit{DALL-E} is now accessible through an API by \textit{OpenAI}, allowing developers to integrate its capabilities directly into their applications.
 
-Below is an example of how to use the DALL-E API in Python to generate and download an image. This code snippet demonstrates how to programmatically request DALL-E to create an image based on a specified prompt and then download the generated image to a local directory.
+Below is an example of how to use the \textit{DALL-E} API in Python to generate and download an image. This code snippet demonstrates how to programmatically request \textit{DALL-E} to create an image based on a specified prompt and then download the generated image to a local directory.
 
 
 \begin{lstlisting}
@@ -77,17 +83,16 @@ generate_and_download_image(prompt, save_path, file_name)
 
 \end{lstlisting}
 
-\subsection{ImagineAPI.dev Midjourney API Image Generation}
+\subsection{\textit{ImagineAPI.dev} \textit{Midjourney} API Image Generation}
 
 Given the absence of an official \textit{Midjourney} API, third-party services such as \textit{ImagineAPI.dev} offer an alternative means of accessing \textit{Midjourney}'s image generation model. 
 
-Below is an example of how to use their API in Python to generate and download the images. As \textit{Midjourney} generates four image variants for each call, this code randomly selects one of these four images for analysis and saves the other three as a reference.
+Below is an example of how to use their API in Python to generate and download the images.
 
 \begin{lstlisting}
 import http.client
 import json
 import time
-import random
 import os
 import requests
 
@@ -125,31 +130,18 @@ def wait_for_image(image_id, api_key):
             print(f"Image generation in progress. Status: {image_data['status']}")
             time.sleep(5)
 
-def download_images(image_data, download_path, selection_path):
-    """
-    Downloads the images from the provided image data.
-    
-    This function takes the list of image URLs from the 'upscaled_urls' field in the image data.
-    It randomly selects one of these images to save in the 'selection_path' directory, 
-    indicating it as the chosen image. The rest of the images are saved in the 'download_path' directory.
-
-    Args:
-        image_data: The data containing the image URLs.
-        download_path: The path where the majority of images will be downloaded.
-        selection_path: The path where the randomly selected image will be saved.
-    """
+def download_images(image_data, download_path):
+    """Downloads the images to the specified path."""
     if not image_data or 'upscaled_urls' not in image_data:
         print("No image data provided for download.")
         return
 
     urls = image_data['upscaled_urls']
     os.makedirs(download_path, exist_ok=True)
-    os.makedirs(selection_path, exist_ok=True)
 
-    selected_image_url = random.choice(urls)
     for url in urls:
         file_name = url.split('/')[-1]
-        file_path = os.path.join(selection_path if url == selected_image_url else download_path, file_name)
+        file_path = os.path.join(download_path, file_name)
 
         response = requests.get(url)
         if response.status_code == 200:
@@ -158,6 +150,7 @@ def download_images(image_data, download_path, selection_path):
             print(f"Image downloaded successfully: {file_path}")
         else:
             print(f"Error downloading image from {url}: {response.status_code}")
+
 
 # Example usage
 api_key = 'given-api-key-here'
@@ -204,6 +197,12 @@ def analyse_image(image_path):
     # Calculate the average color (in RGB)
     average_colour = np.mean(image_rgb, axis=(0, 1))
     
+    # Round the average color values and convert to integer
+    rounded_average_colour = np.round(average_colour).astype(int)
+
+    # Calculate the overall average intensity of RGB
+    average_rgb_intensity = np.mean(rounded_average_colour)
+
     # Calculate the average brightness (V channel of HSV)
     average_brightness = np.mean(image_hsv[:, :, 2])
     
@@ -215,7 +214,7 @@ def analyse_image(image_path):
     plt.axis('off')
     plt.title('Analysed Image')
     plt.show()
-    
+        
     # Return the computed visual attributes
-    return average_colour, average_brightness, average_saturation
+    return rounded_average_colour, average_rgb_intensity, average_brightness, average_saturation
 \end{lstlisting}

@@ -1,6 +1,31 @@
 \section{Methods}
 
-\subsection{Sample}
+\subsection{Selection of AI Models}
+For this study, the two prominent image-to-text models \textit{DALL-E 3} and \textit{Midjourney v5.2} were selected. Both models have seen a significant rise in popularity and usage in recent years. 
 
-\subsubsection{Prompt Design and Generation}
+The reason for choosing these models lies in their widespread public discussion in the field of AI image generation \parencite{Gibson2023, Gindham2023, Guiness2023}. Furthermore, both models have garnered widespread attention due to their advanced capabilities and user-friendly interfaces, making them accessible to a broad audience
 
+\textit{DALL-E 3} was recently integrated into \textit{Microsoft}'s \textit{Bing} search engine and offers limited free and very simple query access to the \parencite{Bing2024} model. This integration in combination with the direct connection to \textit{ChatGPT} make for its prominence in the public discourse. \textit{Midjourney} on the other hand is not quite as accessible as it operates through a \textit{Discord} interface, which may pose a barrier to those unfamiliar with the platform. Nonetheless, despite the discontinuation of its free trial in April 2023 due to high user demand and abuse \parencite{Weiss2023}, \textit{Midjourney} boasts over 16 million registered \textit{Discord} users \parencite{Krivec2023}, highlighting its popularity. While \textit{Midjourney} lacks a first-party API, various third-party providers are working to bridge this gap. 
+
+Another frequently discussed model is \textit{Stable Diffusion}, which has gained popularity since its public release in the second half of 2023. Stable Diffusion still offers free, open-access trials and a first-party API and hence has some advantages over Midjourney. However, it is widely recognised that \textit{Midjourney} and \textit{DALL-E} produce higher quality images at faster speeds as Stable Diffusion requires more computing power \parencite{Kothari2023}. Furthermore, a look at recent \textit{Google} search trends (see figure \ref{fig:google_search_trends}) shows that \textit{Midjourney} and \textit{DALL-E} have a lead in user interest compared to \textit{Stable Diffusion}. These factors led to the selection of  \textit{Midjourney} and \textit{DALL-E} selection for this study.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{resources/google_search_trends.png}
+    \caption{Worldwide Google Search Trends Over Time}
+    \label{fig:google_search_trends}
+\end{figure}
+
+\subsection{Designing Prompts}
+
+A total of 26 prompts ($n=26$)\footnote{These prompts have to be reviewed and refined in a later step to ensure clarity, relevance and alignment with the research objectives. } were developed for this study, which later will be "fed" to the models. A comprehensive list of all prompts can be found in chapter \ref{appendix:prompts} in the appendix.
+
+These prompts were designed to strike a balance between guiding the AI models and allowing sufficient room for interpretation to ensure a wide range of responses. The aim was to provide open-ended prompts to some degree, but specific enough to generate images that were relevant and insightful in the context of extreme weather events. The process of developing prompts followed a structured approach, starting from broader concepts and gradually becoming more specific.
+
+The development process began with the creation of a basic prompt  ($n=1$) ("\textit{Depict an extreme weather event}") that was intentionally broad. This prompt is intended to give the models the freedom to interpret and represent what they inherently understand to be an extreme weather event.
+
+Building on the general prompt, a series of more specific prompts ($n=8$) were developed, each targeting a specific type of extreme weather event as categorised by the IPCC (see table \ref{tab:extreme_weather_events}). This includes prompts such as "\textit{Depict temperature extremes}" or "\textit{Depict heavy precipitation}". These prompts aim to analyse the ability of the models to represent different weather phenomena and their impacts.
+
+Further, the prompts were expanded to include the effects of these weather events ($n=4$). This includes impacts on human life, natural landscapes, infrastructure, and cultural and social changes. These questions were derived directly from the research objectives and the literature review (see chapter \ref{subsec:climate-change-and-extreme-weather}. The aim is to find out how text-to-image models represent the consequences of extreme weather events. In addition, further prompts were developed to explore actions related to extreme weather events ($n=2$). These include recovery efforts and adaptation strategies.
+
+Finally, prompts were developed focusing on the causes of extreme weather events ($n=3$) and future climate scenarios ($n=8$). These prompts aim to identify the AI models' understandings of the causes of extreme weather events and their visualisation of future weather patterns and climate change impacts.

@@ -59,13 +59,13 @@
 
 % Title Page, Abstract, Introduction, Theory, Methods
 \input{chapters/01_titlepage.tex}
-\input{chapters/02_abstract.tex}
-\newpage
+%\input{chapters/02_abstract.tex}
+%\newpage
 \tableofcontents
 \newpage
 \input{chapters/03_introduction.tex}
 \input{chapters/04_theory.tex}
-%\input{chapters/05_methods.tex}
+\input{chapters/05_methods.tex}
 \newpage
 \printbibliography
 
@@ -78,19 +78,20 @@
 \printcontents[appendix]{l}{1}{\setcounter{tocdepth}{2}}
 
 \newpage
-\section{Codebook}
-% Exclude subsections from the main ToC
-\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
-\input{appendix/codebook.tex}
+\input{appendix/01_prompts.tex}
 % Reset tocdepth
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
 \newpage
-\section{Code Scripts}
+\section{Codebook}
 % Exclude subsections from the main ToC
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
-\label{appendix:code}
-\input{appendix/code.tex}
+\input{appendix/02_codebook.tex}
+% Reset tocdepth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+\newpage
+\input{appendix/03_code.tex}
 % Reset tocdepth
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
@@ -99,7 +100,7 @@
 % Exclude subsections from the main ToC
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 \label{appendix:glossary}
-\input{appendix/glossary}
+\input{appendix/04_glossary.tex}
 % Reset tocdepth
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
