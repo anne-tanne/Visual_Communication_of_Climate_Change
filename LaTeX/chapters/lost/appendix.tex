@@ -1,0 +1,135 @@
+\documentclass[hidelinks, 12pt]{article}
+\usepackage{geometry}
+\usepackage[table]{xcolor} % To colour header of table
+\usepackage{tabularx}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{times}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{sourcesanspro} % Include Source Sans Pro package
+\usepackage[most]{tcolorbox}
+\usepackage{titletoc} % Explicitly include the titletoc package
+\setstretch{2} % Adjusted line spacing
+\usepackage{enumitem} % Make sure to include this in your preamble
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+\fancyhead[L]{Conceptions of AI} % Left header
+\fancyhead[R]{\thepage} % Right header
+\renewcommand{\headrulewidth}{0pt} % Remove the header rule
+
+
+\usepackage[style=apa, backend=biber]{biblatex}
+%\usepackage[bibstyle=apa6, citestyle=apa6, backend=biber]{biblatex}
+
+\addbibresource{citations/bibtex.bib}
+
+% Define colors for syntax highlighting
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codegreen}{rgb}{0,0.5,0.4} % A soft teal color
+
+% Adjust spacing for footnotes
+\setlength{\skip\footins}{1cm plus 4pt minus 2pt}
+
+
+% Listings configuration for Python
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta}, % Keywords colored in magenta
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=Python % Set the language to Python
+}
+
+\lstset{style=mystyle
+}
+
+
+\begin{document}
+
+% Title Page, Abstract, Introduction, Theory, Methods
+\input{chapters/01_titlepage.tex}
+%\input{chapters/02_abstract.tex}
+%\newpage
+\tableofcontents
+\newpage
+\input{chapters/03_introduction.tex}
+\input{chapters/04_theory}
+\input{chapters/05_methods.tex}
+\newpage
+\printbibliography
+
+
+% Appendix
+\newpage
+\appendix
+\pagenumbering{Roman}
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix}
+%\printcontents[appendix]{l}{1}{\setcounter{tocdepth}{2}}
+
+\newpage
+\input{appendix/01_prompts.tex}
+% Reset tocdepth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+\newpage
+\section{Codebook}
+\label{appendix:codebook}
+% Exclude subsections from the main ToC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\input{appendix/02_codebook.tex}
+% Reset tocdepth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+\newpage
+\section{Code Scripts}
+\label{appendix:code-scripts}
+% Exclude subsections from the main ToC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\input{appendix/03_code.tex}
+% Reset tocdepth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+\newpage
+\section{Glossary}
+\label{appendix:glossary}
+% Exclude subsections from the main ToC
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\input{appendix/04_glossary.tex}
+% Reset tocdepth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+% Insert the List of Figures
+\newpage
+\section{List of Figures}
+\listoffigures
+
+% Insert the List of Tables
+\newpage
+\section{List of Tables}
+\listoftables
+
+
+
+
+\end{document}

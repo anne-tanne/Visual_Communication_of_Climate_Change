@@ -1,9 +1,3 @@
-\section{Code Scripts}
-% Exclude subsections from the main ToC
-\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
-\label{appendix:code}
-
-
 \subsection{DALL-E 3 API for Image Generation}
 \label{subsec:dalle-api}
 
@@ -87,7 +81,7 @@ generate_and_download_image(prompt, save_path, file_name)
 
 In this study, the images are generated using \textit{Midjourney}'s standard interface, specifically version 6.0 of the model. This approach was chosen instead of using third-party APIs such as \textit{ImagineAPI.dev} in order to comply with legal and ethical standards.
 
-The process of generating images in Midjourney involves manually entering specific prompts directly into the Midjourney interface on Discord. An example of such a prompt is illustrated below:
+The process of generating images in \textit{Midjourney} involves manually entering specific prompts directly into the \textit{Midjourney} interface on \textit{Discord}. An example of such a prompt is illustrated below:
 \begin{verbatim}
 /imagine prompt: a photorealistic image of a tsunami --v 6 --s 100
 \end{verbatim}
@@ -96,8 +90,8 @@ This example demonstrates the format and parameters used:
 \begin{itemize}
 \item \textbf{Prompt Command:} The \texttt{/imagine} command initiates the image generation process.
 \item \textbf{Prompt Content:} The actual prompt, in this case, "\textit{a photorealistic image of a tsunami}" defines the subject of the generated image.
-\item \textbf{Version Parameter (--v):} The --v 6 parameter specifies the use of Midjourney version 6.0.
-\item \textbf{Stylize Parameter (--s):} The --s 100 parameter sets the level of stylisation. Low stylisation values produce images that are close to the prompt but less artistic. High stylisation values produce images that are very artistic but less in line with the prompt.  The default value of --stylize is 100 while the parameter accepts integer values from 0-1000 when the current model is used.
+\item \textbf{Version Parameter (\texttt{--v}):} The \texttt{--v 6} parameter specifies the use of \textit{Midjourney} version 6.0.
+\item \textbf{Stylize Parameter (\texttt{--s}):} The \texttt{--s 100} parameter sets the level of stylisation. Low stylisation values produce images that are close to the prompt but less artistic. High stylisation values produce images that are very artistic but less in line with the prompt.  The default value of \texttt{--stylize} is 100 while the parameter accepts integer values from 0-1000 when the current model is used.
 \end{itemize}
 
 \subsection{Image Naming Convention and Organisation}
@@ -115,6 +109,7 @@ A specific naming and storage convention will be used to systematically manage t
 The images will be stored in a root directory, with individual subfolders for each prompt.
 
 \subsection{Visual Attribute Detection}
+\label{subsec:visual-attribute-detection}
 
 This Python script is designed to analyse images and extract key visual attributes, specifically average colour, brightness, and saturation. The script performs the following steps:
 
@@ -164,4 +159,28 @@ def analyse_image(image_path):
         
     # Return the computed visual attributes
     return rounded_average_colour, average_rgb_intensity, average_brightness, average_saturation
+\end{lstlisting}
+
+\subsection{Intercoder- and Intracoder-Reliability}
+\label{subsec:reliability-code-script}
+
+This Python script is designed to calculate Krippendorff's alpha for two given coding matrices. The function will return a dictionary with Krippendorff's alpha scores for each column that is present in both dataframes.
+
+\begin{lstlisting}
+import krippendorff
+import numpy as np
+
+def calculate_krippendorff_alpha_for_all_columns(df1, df2):
+    alpha_scores = {}
+    # Iterate over columns that are present in both dataframes and are numeric
+    for col in df1.columns.intersection(df2.columns):
+        if pd.api.types.is_numeric_dtype(df1[col]) and pd.api.types.is_numeric_dtype(df2[col]) and col != 'CU':
+            # Stack the two coders' ratings together for the current column
+            ratings = np.vstack([df1[col].values, df2[col].values])
+            
+            # Calculate Krippendorff's alpha for the current column, handling NaN values
+            alpha = krippendorff.alpha(reliability_data=ratings, level_of_measurement='nominal')
+            alpha_scores[col] = alpha
+    return alpha_scores
+
 \end{lstlisting}
